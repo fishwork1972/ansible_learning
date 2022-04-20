@@ -1,0 +1,11 @@
+---
+
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: remove telnet package
+    yum:
+      name: telnet
+      state: absent

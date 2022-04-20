@@ -1,0 +1,10 @@
+---
+
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: install telnet package
+    yum:
+      name: telnet
