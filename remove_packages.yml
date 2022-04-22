@@ -4,41 +4,37 @@
   become: true
   tasks:
 
-  - name: update repository index Ubuntu
-    apt:
-      upgrade: dist
-      update_cache: yes
-    when: ansible_distribution == "Ubuntu"
-
-  - name: update repository index CentOS
+  - name: update repository index
     yum:
       update_cache: yes
     when: ansible_distribution == "CentOS"
 
-  - name: install telnet package Ubuntu
+  - name: remove telnet package from Ubuntu
     apt: 
       name: telnet
-      state: latest
+      state: absent
     when: ansible_distribution == "Ubuntu"
 
-  - name: install apache2 package Ubuntu
+  - name: remove apache2 and mariadb package from Ubuntu
     apt:
       name: 
         - apache2
         - libapache2-mod-php
-      state: latest
+        - mariadb
+      state: absent
     when: ansible_distribution == "Ubuntu"
 
-  - name: install telnet package CentOS
+  - name: remove telnet package
     yum:
       name: telnet
-      state: latest
+      state: absent
     when: ansible_distribution == "CentOS"
 
-  - name: install apache and php CentOS
+  - name: remove apache2 php and mariadb for CentOS
     yum:
       name:
         - httpd
         - php
-      state: latest
+        - mariadb
+      state: absent
     when: ansible_distribution == "CentOS"
