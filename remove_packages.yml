@@ -38,3 +38,10 @@
         - mariadb
       state: absent
     when: ansible_distribution == "CentOS"
+
+  - name: remove samba from CentOS
+    yum:
+      name: 
+        - samba
+      state: absent
+    when: ansible_distribution == "CentOS"
