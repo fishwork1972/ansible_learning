@@ -1,0 +1,44 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: update repository index Ubuntu
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: update repository index CentOS
+    tags: always
+    yum:
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: create simone user
+    tags: always
+    user: 
+      name: simone
+      groups: root
+
+  - name: add ssh key for simone
+    tags: always
+    authorized_key:
+      user: simone
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDEVuNR5WJbjrkleFF+HNvOvqEufA7BBicXwhPsHeB/raGvwXUrj9WGhfX6YXom3QbQNZkvdQX6Y1RkhV8swZLb/TYce8QbSc/Q3i6YdVIlzjcRUhx1o7O5jsrvLlrdK2f1FGDu2w3UKvvV9NnEYyGSthw4QdXbJyXDHCLVMn06QxxhlPKnWL70lbBNEt1xkhZinViBQNv9MRtdI6TK0FI7dE/L9RKZEqZ5RKzTJAuq4EsdMqn+oRp+sSDTGiBoWQt3XYjeCOK27UtDq0dl9iou2VsPp+dl9vHDEFsdFA8bb2sk4+g1T0croxxONtsyA/9Z2wB1kHsGYRO4Dhci6iXybUr0UC+oDmkfruneNc/qfZ5eQ0qHtjIWLbHRz5SjvInWIsL0c9H4FpTfpMqTsm8oHEvs+Jt0uRSodoVNHdir2McOsjVmch5SGKSAH8b5PsxYFL1KH9e1VlR8epgqoWm0GJhbnTHKpijhDCghQ7Gn75Sf/r0ZWN+AsXhxfdnVOKLvXoORlHHkk4lir8ermflkOCxrNnsVrA+43FLI2oXPVhpzvTzHMetD8WWlFz+gj0U8tAUm7B3esrI+ZqQgJAna7cIIWTUYV0bdh+pNUk2I2jP0UIjgd6wAY1fDEJYpksVhHN+jOWkArwXhw0OljzYBi8+pY8a4+cOTNPx4HtflQQ== ansible1"
+
+  - name: add sudoers file for simone
+    tags: always
+    copy:
+      src: sudoer_simone
+      dest: /etc/sudoers.d/simone
+      owner: root
+      group: root
+      mode: 0440
